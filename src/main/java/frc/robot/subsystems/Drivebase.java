@@ -19,7 +19,7 @@ public class Drivebase extends SubsystemBase {
   private CANSparkMax leftFollower = new CANSparkMax(5, MotorType.kBrushless);
 
   private CANSparkMax rightLeader = new CANSparkMax(2, MotorType.kBrushless);
-  private CANSparkMax rightFollower = new CANSparkMax(3, MotorType.kBrushless);
+  // private CANSparkMax rightFollower = new CANSparkMax(3, MotorType.kBrushless);
 
   private DifferentialDrive diffDrive = new DifferentialDrive(leftLeader, rightLeader);
 
@@ -27,7 +27,7 @@ public class Drivebase extends SubsystemBase {
 
   public Drivebase() {
     leftFollower.follow(leftLeader);
-    rightFollower.follow(rightLeader);
+    // rightFollower.follow(rightLeader);
 
     leftEncoder = leftLeader.getEncoder();
     rightEncoder = rightLeader.getEncoder();

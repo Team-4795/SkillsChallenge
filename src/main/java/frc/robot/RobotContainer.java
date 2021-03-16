@@ -9,8 +9,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.subsystems.Drivebase;
+import frc.robot.commands.ShooterFixedSpeed;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,6 +24,8 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivebase drivebase = new Drivebase();
+
+  private final Shooter shooter = new Shooter();
 
   private final Command m_autoCommand = new PrintCommand("Autonomous!");
   private final Joystick controller = new Joystick(0);
@@ -43,8 +48,10 @@ public class RobotContainer {
                                   drivebase, 
                                   () -> controller.getRawAxis(1), 
                                   () -> controller.getRawAxis(2)));
-  
-    
+    shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
+
+    JoystickButton buttonC = new JoystickButton(controller, 10); //10 is a guess
+    buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
   }
 
   /**

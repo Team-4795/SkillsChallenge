@@ -5,11 +5,14 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -29,9 +32,16 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     
     acceleratorEncoder = acceleratorWheel.getEncoder();
-    
     mainFlywheel2.follow(mainFlywheel1);
 
+    mainFlywheel1.configFactoryDefault();
+
+    mainFlywheel1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+
+    mainFlywheel1.config_kF(0, 0, 0);
+    mainFlywheel1.config_kP(0, 0, 0);
+		mainFlywheel1.config_kI(0, 0, 0);
+		mainFlywheel1.config_kD(0, 0, 0);
   }
 
   public void setShooter(double speed) {
@@ -39,8 +49,18 @@ public class Shooter extends SubsystemBase {
     acceleratorWheel.set(speed);
   }
 
+  public void setShooterRPM(double speed){
+//2048 ticks per revolution 
+//ticks per .10 second 
+// 1/2048*60
+    double speed_FalconUnits = speed/(600.0)*2048.0;
+    mainFlywheel1.set(TalonFXControlMode.Velocity, speed_FalconUnits);
+  }
+
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("speed in RPM",(mainFlywheel1.getSelectedSensorVelocity())/2048.0*600);
     // This method will be called once per scheduler run
   }
 }
+//(mainFlywheel1.getSelectedSensorVelocity())/2048.0*600

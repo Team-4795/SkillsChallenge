@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.commands.ShooterFixedSpeed;
+import frc.robot.commands.ShooterRPM;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -26,8 +27,6 @@ public class RobotContainer {
   private final Drivebase drivebase = new Drivebase();
 
   private final Shooter shooter = new Shooter();
-
-  private final Command m_autoCommand = new PrintCommand("Autonomous!");
   private final Joystick controller = new Joystick(0);
 
 
@@ -61,7 +60,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return new ShooterRPM(shooter, 500);
   }
 
 }

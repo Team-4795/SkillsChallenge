@@ -26,7 +26,8 @@ public class Shooter extends SubsystemBase {
   TalonFX mainFlywheel1 = new TalonFX(6);
   TalonFX mainFlywheel2 = new TalonFX(7);
 
-  VictorSPX selector = new VictorSPX(10);
+  VictorSPX selector = new VictorSPX(9);
+  VictorSPX indexer = new VictorSPX(10);
 
   // CANTalonFX mainFlywheel1 = new CANTalonFX()
     
@@ -51,13 +52,12 @@ public class Shooter extends SubsystemBase {
   public void setShooter(double speed) {
     mainFlywheel1.set(ControlMode.PercentOutput, speed);
     acceleratorWheel.set(speed);
-    // selector.set(ControlMode.PercentOutput, speed > 0 ? 0.25 : 0.0);
   }
 
   public void setShooterRPM(double speed){
-//2048 ticks per revolution 
-//ticks per .10 second 
-// 1/2048*60
+    //2048 ticks per revolution 
+    //ticks per .10 second 
+    // 1/2048*60
     double speed_FalconUnits = speed/(600.0)*2048.0;
     mainFlywheel1.set(TalonFXControlMode.Velocity, speed_FalconUnits);
   }

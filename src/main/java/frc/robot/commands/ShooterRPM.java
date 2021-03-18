@@ -14,6 +14,7 @@ public class ShooterRPM extends CommandBase {
   
   public ShooterRPM(Shooter shooter, double speed) {
     this.shooter = shooter;
+    this.speed = speed;
     addRequirements(shooter);
   }
   // Called when the command is initially scheduled.
@@ -29,7 +30,7 @@ public class ShooterRPM extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setShooter(0.0);
+    shooter.setShooter(0);
   }
 
   // Returns true when the command should end.

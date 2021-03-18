@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.IndexerShooterGroup;
 import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ShooterFixedSpeed;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.subsystems.Shooter;
@@ -26,6 +28,9 @@ public class RobotContainer {
   private final Drivebase drivebase = new Drivebase();
 
   private final Shooter shooter = new Shooter();
+
+  private final Indexer indexer = new Indexer();
+
   private final Joystick controller = new Joystick(0);
 
 
@@ -49,7 +54,9 @@ public class RobotContainer {
     shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
 
     JoystickButton buttonC = new JoystickButton(controller, 10); //10 is a guess
-    buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
+    // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
+    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.4, 0.4, shooter, 0.8));
+    //0.5 second indexer delay, 0.4 on indexer motor, 0.4 on selector motor, 0.8 on shooter
   }
 
   /**

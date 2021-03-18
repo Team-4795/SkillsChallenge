@@ -16,6 +16,8 @@ public class ShooterFixedSpeed extends CommandBase {
   /** Creates a new ShooterFixedSpeed. */
   public ShooterFixedSpeed(Shooter shooter, double speed) {
 
+    this.speed = speed;
+
     this.shooter = shooter;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);

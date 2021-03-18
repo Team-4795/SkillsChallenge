@@ -45,8 +45,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     drivebase.setDefaultCommand(new ArcadeDrive(
                                   drivebase, 
-                                  () -> controller.getRawAxis(1), 
-                                  () -> controller.getRawAxis(2)));
+                                  () -> 0.0, 
+                                  () -> 0.0));
     shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
 
     JoystickButton buttonC = new JoystickButton(controller, 10); //10 is a guess
@@ -60,7 +60,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new ShooterRPM(shooter, 500);
+    return new ShooterFixedSpeed(shooter, 0.3);
   }
 
 }

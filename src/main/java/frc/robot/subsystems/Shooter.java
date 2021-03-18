@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -25,6 +26,8 @@ public class Shooter extends SubsystemBase {
   TalonFX mainFlywheel1 = new TalonFX(6);
   TalonFX mainFlywheel2 = new TalonFX(7);
 
+  VictorSPX selector = new VictorSPX(10);
+
   // CANTalonFX mainFlywheel1 = new CANTalonFX()
     
   CANEncoder acceleratorEncoder;
@@ -32,12 +35,13 @@ public class Shooter extends SubsystemBase {
   public Shooter() {
     
     acceleratorEncoder = acceleratorWheel.getEncoder();
+    mainFlywheel1.setInverted(true);
     mainFlywheel2.follow(mainFlywheel1);
 
     mainFlywheel1.configFactoryDefault();
 
     mainFlywheel1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-
+    mainFlywheel2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     mainFlywheel1.config_kF(0, 0, 0);
     mainFlywheel1.config_kP(0, 0, 0);
 		mainFlywheel1.config_kI(0, 0, 0);
@@ -47,6 +51,7 @@ public class Shooter extends SubsystemBase {
   public void setShooter(double speed) {
     mainFlywheel1.set(ControlMode.PercentOutput, speed);
     acceleratorWheel.set(speed);
+    // selector.set(ControlMode.PercentOutput, speed > 0 ? 0.25 : 0.0);
   }
 
   public void setShooterRPM(double speed){

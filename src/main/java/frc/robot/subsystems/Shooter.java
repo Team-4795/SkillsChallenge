@@ -25,11 +25,6 @@ public class Shooter extends SubsystemBase {
     
   TalonFX mainFlywheel1 = new TalonFX(6);
   TalonFX mainFlywheel2 = new TalonFX(7);
-
-  VictorSPX selector = new VictorSPX(9);
-  VictorSPX indexer = new VictorSPX(10);
-
-  // CANTalonFX mainFlywheel1 = new CANTalonFX()
     
   CANEncoder acceleratorEncoder;
 

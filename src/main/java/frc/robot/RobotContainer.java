@@ -53,9 +53,9 @@ public class RobotContainer {
                                   () -> 0.0));
     shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
 
-    JoystickButton buttonC = new JoystickButton(controller, 10); //10 is a guess
+    JoystickButton buttonC = new JoystickButton(controller, 8); //10 is a guess
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
-    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.4, 0.4, shooter, 0.8));
+    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.4, 0.4, shooter, 3000));
     //0.5 second indexer delay, 0.4 on indexer motor, 0.4 on selector motor, 0.8 on shooter
   }
 
@@ -66,7 +66,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new ShooterFixedSpeed(shooter, 0.4);
+    return new ShooterRPM(shooter, 3000);
   }
 
 }

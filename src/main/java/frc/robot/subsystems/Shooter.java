@@ -37,8 +37,8 @@ public class Shooter extends SubsystemBase {
 
     mainFlywheel1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     mainFlywheel2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-    mainFlywheel1.config_kF(0, 0, 0);
-    mainFlywheel1.config_kP(0, 0, 0);
+    mainFlywheel1.config_kF(0, 0.05, 0);
+    mainFlywheel1.config_kP(0, 0.02, 0);
 		mainFlywheel1.config_kI(0, 0, 0);
 		mainFlywheel1.config_kD(0, 0, 0);
   }

@@ -54,6 +54,7 @@ public class Shooter extends SubsystemBase {
     // 1/2048*60
     double speed_FalconUnits = speed/(600.0)*2048.0;
     mainFlywheel1.set(TalonFXControlMode.Velocity, speed_FalconUnits);
+    acceleratorWheel.set(speed/6000.0);
   }
 
   @Override

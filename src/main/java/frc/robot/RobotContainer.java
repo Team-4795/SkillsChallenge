@@ -3,19 +3,21 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.IndexerShooterGroup;
+import frc.robot.commands.DeployIntake;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ShooterFixedSpeed;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+// import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton; 
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,11 +35,13 @@ public class RobotContainer {
 
   private final Joystick controller = new Joystick(0);
 
+  private final Intake intake = new Intake(); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    
   }
 
   /**
@@ -47,18 +51,23 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    double throttle = controller.getRawButtonPressed(8) ? 1.0 : 0.0 ;
+    // double forward = -controller.getRawAxis(1) * (0.85 - 0.65 * throttle);
+    // double turn = -controller.getRawAxis(2) * (0.85 - 0.65 * throttle);
     drivebase.setDefaultCommand(new ArcadeDrive(
                                   drivebase, 
-                                  () -> 0.0, 
-                                  () -> 0.0));
+                                  () -> -controller.getRawAxis(1) * 0.3, 
+                                  () -> -controller.getRawAxis(2) * 0.3));
     shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
 
-    JoystickButton buttonC = new JoystickButton(controller, 8); //10 is a guess
+    JoystickButton buttonC = new JoystickButton(controller, 5); //10 is a guess
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
-    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.4, 0.4, shooter, 3000));
+    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.6, 0.6, shooter, 4250));
     //0.5 second indexer delay, 0.4 on indexer motor, 0.4 on selector motor, 0.8 on shooter
-  }
 
+    JoystickButton buttonA = new JoystickButton(controller, 6);
+    buttonA.whileHeld( new DeployIntake(intake));
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *

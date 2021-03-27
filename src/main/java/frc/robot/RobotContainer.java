@@ -13,7 +13,6 @@ import frc.robot.commands.ShooterFixedSpeed;
 import frc.robot.commands.ShooterRPM;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**

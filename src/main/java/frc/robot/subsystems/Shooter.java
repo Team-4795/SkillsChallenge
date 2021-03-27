@@ -9,8 +9,10 @@ import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,17 +23,40 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
 
   CANSparkMax acceleratorWheel = new CANSparkMax(8, MotorType.kBrushless);
-    
+  CANPIDController acceleratController; 
+  double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM; 
+  CANEncoder acceleratorEncoder;
+
   TalonFX mainFlywheel1 = new TalonFX(6);
   TalonFX mainFlywheel2 = new TalonFX(7);
 
   // CANTalonFX mainFlywheel1 = new CANTalonFX()
-    
-  CANEncoder acceleratorEncoder;
 
   public Shooter() {
-    
+
+    // accelerator wheel
+    acceleratorWheel.restoreFactoryDefaults();
+    acceleratController = acceleratorWheel.getPIDController();
     acceleratorEncoder = acceleratorWheel.getEncoder();
+    // PID coefficients --> NOT TESTED, RANDOM
+    kP = 6e-5; 
+    kI = 0;
+    kD = 0; 
+    kIz = 0; 
+    kFF = 0.000015; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+    maxRPM = 5700;
+
+    // set PID coefficients
+    acceleratController.setP(kP);
+    acceleratController.setI(kI);
+    acceleratController.setD(kD);
+    acceleratController.setIZone(kIz);
+    acceleratController.setFF(kFF);
+    acceleratController.setOutputRange(kMinOutput, kMaxOutput);
+
+    //flywheel
     mainFlywheel2.follow(mainFlywheel1);
 
     mainFlywheel1.configFactoryDefault();
@@ -41,7 +66,7 @@ public class Shooter extends SubsystemBase {
     mainFlywheel1.config_kF(0, 0, 0);
     mainFlywheel1.config_kP(0, 0, 0);
 		mainFlywheel1.config_kI(0, 0, 0);
-		mainFlywheel1.config_kD(0, 0, 0);
+    mainFlywheel1.config_kD(0, 0, 0);
   }
 
   public void setShooter(double speed) {
@@ -57,9 +82,14 @@ public class Shooter extends SubsystemBase {
     mainFlywheel1.set(TalonFXControlMode.Velocity, speed_FalconUnits);
   }
 
+  public void setAcceleratorRPM(double speed){
+    acceleratController.setReference(speed, ControlType.kVelocity);
+  }
+
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("speed in RPM",(mainFlywheel1.getSelectedSensorVelocity())/2048.0*600);
+    SmartDashboard.putNumber("flywheel speed in RPM",(mainFlywheel1.getSelectedSensorVelocity())/2048.0*600);
+    SmartDashboard.putNumber("accelerator speed in RPM", acceleratorEncoder.getVelocity());
     // This method will be called once per scheduler run
   }
 }

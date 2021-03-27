@@ -25,6 +25,7 @@ public class ShooterRPM extends CommandBase {
   @Override
   public void execute() {
     shooter.setShooterRPM(speed);
+    shooter.setAcceleratorRPM(speed);
   }
 
   // Called once the command ends or is interrupted.

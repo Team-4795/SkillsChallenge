@@ -86,7 +86,7 @@ public class Shooter extends SubsystemBase {
     mainFlywheel1.config_kP(0, 0.02, 0);
 		mainFlywheel1.config_kI(0, 0, 0);
     mainFlywheel1.config_kD(0, 0, 0);
-  }
+
 
   public void resetHoodEncoder() {
     hoodRight.setSelectedSensorPosition(0, 0, 10);
@@ -122,7 +122,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("speed in RPM",(mainFlywheel1.getSelectedSensorVelocity())/2048.0*600);
     SmartDashboard.putNumber("encoderTiks", hoodRight.getSelectedSensorPosition());
-    SmartDashboard.putNumber("degrees", hoodRight.getSelectedSensorPosition()/encoderCountsPerDegree);
+    SmartDashboard.putNumber("degrees", hoodRight.getSelectedSensorPosition()/ encoderCountsPerHoodDegree);
     SmartDashboard.putNumber("limit switch status", hoodRight.isFwdLimitSwitchClosed());
     SmartDashboard.putNumber("rev limit switch", hoodRight.isRevLimitSwitchClosed());
     // This method will be called once per scheduler run

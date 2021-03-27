@@ -27,10 +27,10 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(speed);
   }
   public void out() { 
-    extensionSolenoid.set(Value.kForward);
+    // extensionSolenoid.set(Value.kForward);
   }
   public void in() {
-    extensionSolenoid.set(Value.kReverse);
+    // extensionSolenoid.set(Value.kReverse);
   }
 
   @Override

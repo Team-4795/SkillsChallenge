@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DigitalSource;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -12,4 +14,12 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+
+	public static final int HOOD_RIGHT = 12;
+    public static final int HOOD_LEFT = 11;
+	public static final int sourceB = 0;
+	public static final int sourceA = 0;
+	public static final int HOOD_LIMIT = 0;
+
+}

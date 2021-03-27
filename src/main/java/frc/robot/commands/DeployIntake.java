@@ -23,14 +23,14 @@ public class DeployIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.motors(-0.5);
-    // intake.out();
+    intake.motors(-0.6);
+    intake.out();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // intake.in();
+    intake.in();
     intake.motors(0);
   }
 

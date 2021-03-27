@@ -25,6 +25,7 @@ public class IndexerShooterGroup extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
+      // new SetHoodAngle(shooter, 20.0),
       new IndexerWithDelay(indexerDelay, indexer, indexerSpeed, selectorSpeed),
       new ShooterRPM(shooter, shooterSpeed)
     );

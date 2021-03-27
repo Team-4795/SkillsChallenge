@@ -3,11 +3,14 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.IndexerShooterGroup;
+import frc.robot.commands.SetHood;
+import frc.robot.commands.SetHoodAngle;
 import frc.robot.commands.DeployIntake;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Indexer;
@@ -61,8 +64,10 @@ public class RobotContainer {
     shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
 
     JoystickButton buttonC = new JoystickButton(controller, 5); //10 is a guess
+    JoystickButton buttonY = new JoystickButton(controller, 1);
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
-    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.6, 0.6, shooter, 4250));
+    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.6, 0.75, shooter, 4250));
+    buttonY.whenHeld(new SetHood(shooter));
     //0.5 second indexer delay, 0.4 on indexer motor, 0.4 on selector motor, 0.8 on shooter
 
     JoystickButton buttonA = new JoystickButton(controller, 6);

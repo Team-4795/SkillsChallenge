@@ -57,12 +57,13 @@ public class Shooter extends SubsystemBase {
     acceleratController.setOutputRange(kMinOutput, kMaxOutput);
 
     //flywheel
+    mainFlywheel1.setInverted(true);
     mainFlywheel2.follow(mainFlywheel1);
 
     mainFlywheel1.configFactoryDefault();
 
     mainFlywheel1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-
+    mainFlywheel2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     mainFlywheel1.config_kF(0, 0, 0);
     mainFlywheel1.config_kP(0, 0, 0);
 		mainFlywheel1.config_kI(0, 0, 0);
@@ -75,9 +76,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooterRPM(double speed){
-//2048 ticks per revolution 
-//ticks per .10 second 
-// 1/2048*60
+    //2048 ticks per revolution 
+    //ticks per .10 second 
+    // 1/2048*60
     double speed_FalconUnits = speed/(600.0)*2048.0;
     mainFlywheel1.set(TalonFXControlMode.Velocity, speed_FalconUnits);
   }

@@ -5,18 +5,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Indexer;
 
-public class ShooterRPM extends CommandBase {
-  /** Creates a new setRPM. */
-  private Shooter shooter;
-  private double speed;
-  
-  public ShooterRPM(Shooter shooter, double speed) {
-    this.shooter = shooter;
-    this.speed = speed;
-    addRequirements(shooter);
+public class IndexerCommand extends CommandBase {
+  private double indexerSpeed;
+  private double selectorSpeed;
+  private Indexer indexer;
+
+/** Creates a new Indexer. */
+  public IndexerCommand(Indexer indexer, double indexerSpeed, double selectorSpeed) {
+    this.indexerSpeed = indexerSpeed;
+    this.selectorSpeed = selectorSpeed;
+    this.indexer = indexer;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(indexer);
   }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -24,14 +28,17 @@ public class ShooterRPM extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setShooterRPM(speed);
-    shooter.setAcceleratorRPM(speed);
+
+    indexer.setIndexerSpeed(indexerSpeed, selectorSpeed);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.setShooter(0);
+
+    indexer.setIndexerSpeed(0.0, 0.0);
+
   }
 
   // Returns true when the command should end.

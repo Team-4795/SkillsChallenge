@@ -15,6 +15,10 @@ import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
+import com.revrobotics.EncoderType;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 // import org.graalvm.compiler.core.common.CancellationBailoutException;
@@ -36,10 +40,10 @@ public class Shooter extends SubsystemBase {
   TalonFX mainFlywheel1 = new TalonFX(6);
   TalonFX mainFlywheel2 = new TalonFX(7);
 
-  TalonSRX hoodLeft = new TalonSRX(Constants.HOOD_LEFT);
-  TalonSRX hoodRight = new TalonSRX(Constants.HOOD_RIGHT);
-    
-  CANEncoder acceleratorEncoder;
+  CANSparkMax hoodRight = new CANSparkMax(Constants.HOOD_RIGHT, MotorType.kBrushed);
+  CANSparkMax hoodLeft = new CANSparkMax(Constants.HOOD_LEFT, MotorType.kBrushed);
+
+  CANDigitalInput hoodLimit;
 
   // Encoder hoodEncoder = new Encoder(Constants.sourceA, Constants.sourceB);
 
@@ -47,61 +51,96 @@ public class Shooter extends SubsystemBase {
 
   // CANPIDController hoodPID;
 
-  private final static double encoderCountsPerGearDegree = 1680/720;
-  private final static double encoderCountsPerHoodDegree = 400/46.3;
+  // private final static double encoderCountsPerGearDegree = 1680/720;
+  private final static double encoderCountsPerHoodDegree = 70/46.3;
 
   private final int currentLimitHood = 5;
 
-  // private final DigitalInput hoodLimit;
+  CANPIDController acceleratController; 
+  CANPIDController hoodController;
 
+  double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM; 
+  double p, i, d, iz, ff, maxOutput, minOutput, maxrpm;
+
+  CANEncoder acceleratorEncoder;
+  CANEncoder hoodEncoder;
 
 
 
   public Shooter() {
-    // hoodLimit = new DigitalInput(channel);
+    acceleratorWheel.restoreFactoryDefaults();
+    hoodRight.restoreFactoryDefaults();
+
+    
+
+    acceleratController = acceleratorWheel.getPIDController();
+    acceleratorEncoder = acceleratorWheel.getEncoder();
+
+    
+
+    // PID coefficients --> NOT TESTED, RANDOM
+    kP = 0.01; 
+    kI = 0;
+    kD = 0; 
+    kIz = 0; 
+    kFF = 0.1; 
+    kMaxOutput = 1; 
+    kMinOutput = -1;
+    maxRPM = 5500;
+
+    p = 0.045; 
+    i = 0.0;
+    d = 0; 
+    iz = 0; 
+    maxOutput = 0.75; 
+    minOutput = -0.75;
+
+    // set PID coefficients
+    acceleratController.setP(kP);
+    acceleratController.setI(kI);
+    acceleratController.setD(kD);
+    acceleratController.setIZone(kIz);
+    acceleratController.setFF(kFF);
+    acceleratController.setOutputRange(kMinOutput, kMaxOutput);
+
+    hoodController = hoodRight.getPIDController();
+    hoodEncoder = hoodRight.getEncoder(EncoderType.kQuadrature, 28);
+    hoodEncoder.setPosition(0);
+    hoodLimit = hoodRight.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    hoodRight.setSoftLimit(SoftLimitDirection.kReverse, -65.0f);
+    hoodRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    hoodController.setP(p);
+    hoodController.setI(i);
+    hoodController.setD(d);
+    hoodController.setIZone(iz);
+    hoodController.setOutputRange(minOutput, maxOutput);
+    hoodLeft.follow(hoodRight, true);
+    
+
     mainFlywheel1.setInverted(true);
     mainFlywheel2.follow(mainFlywheel1);
-
-    // hoodRight.setInverted(true);
-    hoodLeft.follow(hoodRight);
-    hoodLeft.setInverted(true);
-
     mainFlywheel1.configFactoryDefault();
-    hoodRight.configFactoryDefault();
-
-    hoodRight.enableCurrentLimit(true);
-    hoodLeft.enableCurrentLimit(true);
-    hoodRight.configContinuousCurrentLimit(currentLimitHood);
-    hoodLeft.configContinuousCurrentLimit(currentLimitHood);
 
     mainFlywheel1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     mainFlywheel2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-    hoodRight.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.QuadEncoder, 0, 0);
 
-    hoodRight.config_kP(0, 0.5, 0);
-    hoodRight.config_kI(0, 0.0002, 0);
-    hoodRight.config_kD(0, 0, 0);
-
-    mainFlywheel1.config_kF(0, 0.05, 0);
-    mainFlywheel1.config_kP(0, 0.02, 0);
+    mainFlywheel1.config_kF(0, 0.0485, 0);
+    mainFlywheel1.config_kP(0, 0.016, 0);
 		mainFlywheel1.config_kI(0, 0, 0);
     mainFlywheel1.config_kD(0, 0, 0);
 
+  }
 
   public void resetHoodEncoder() {
-    hoodRight.setSelectedSensorPosition(0, 0, 10);
+    // hoodRight.setSelectedSensorPosition(0, 0, 10);
   }
 
   public void setHood(double speed) {
-    hoodRight.set(ControlMode.PercentOutput, speed);
+    hoodRight.set(speed);
   }
 
   public void setHoodAngle(double degrees) {
-      hoodRight.set(TalonSRXControlMode.Position, 1000);
-  }
-
-  public TalonSRX getHood() {
-    return hoodRight;
+      hoodController.setReference(-degrees*encoderCountsPerHoodDegree, ControlType.kPosition);
   }
 
   public void setShooter(double speed) {
@@ -118,13 +157,20 @@ public class Shooter extends SubsystemBase {
     acceleratorWheel.set(speed/6000.0);
   }
 
+  public void setAcceleratorRPM(double speed){
+    acceleratController.setReference(speed, ControlType.kVelocity);
+  }
+
   @Override
   public void periodic() {
+    if (hoodLimit.get()) {
+      hoodEncoder.setPosition(0);
+    }
     SmartDashboard.putNumber("speed in RPM",(mainFlywheel1.getSelectedSensorVelocity())/2048.0*600);
-    SmartDashboard.putNumber("encoderTiks", hoodRight.getSelectedSensorPosition());
-    SmartDashboard.putNumber("degrees", hoodRight.getSelectedSensorPosition()/ encoderCountsPerHoodDegree);
-    SmartDashboard.putNumber("limit switch status", hoodRight.isFwdLimitSwitchClosed());
-    SmartDashboard.putNumber("rev limit switch", hoodRight.isRevLimitSwitchClosed());
+    SmartDashboard.putNumber("encoderTiks", hoodEncoder.getPosition());
+    SmartDashboard.putNumber("degrees", hoodEncoder.getPosition()/ encoderCountsPerHoodDegree);
+    SmartDashboard.putBoolean("limit switch status", hoodLimit.get());
+    // SmartDashboard.putNumber("rev limit switch", hoodRight.isRevLimitSwitchClosed());
     // This method will be called once per scheduler run
   }
 }

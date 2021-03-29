@@ -13,9 +13,11 @@ import frc.robot.subsystems.Shooter;
 public class SetHood extends CommandBase {
 
   private final Shooter shooter;
+  private final double speed;
   
-  public SetHood(Shooter shooter) {
+  public SetHood(Shooter shooter, double speed) {
     this.shooter = shooter;
+    this.speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,7 +30,7 @@ public class SetHood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setHood(0.4);
+    shooter.setHood(speed);
   }
 
   // Called once the command ends or is interrupted.

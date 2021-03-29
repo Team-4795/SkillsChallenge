@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.IndexerShooterGroup;
 import frc.robot.commands.SetHood;
@@ -65,9 +66,15 @@ public class RobotContainer {
 
     JoystickButton buttonC = new JoystickButton(controller, 5); //10 is a guess
     JoystickButton buttonY = new JoystickButton(controller, 1);
+    JoystickButton buttonX = new JoystickButton(controller, 4);
+    JoystickButton buttonB = new JoystickButton(controller, 2);
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
-    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.6, 0.75, shooter, 4250));
-    buttonY.whenHeld(new SetHood(shooter));
+    SmartDashboard.putNumber("hood degrees", 35);
+    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4230));
+    buttonY.whenHeld(new SetHood(shooter, 0.4));
+    buttonX.whenHeld(new SetHood(shooter, -0.4));
+    buttonB.whenHeld(new SetHoodAngle(shooter, 35));
+    
     //0.5 second indexer delay, 0.4 on indexer motor, 0.4 on selector motor, 0.8 on shooter
 
     JoystickButton buttonA = new JoystickButton(controller, 6);

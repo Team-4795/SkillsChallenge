@@ -17,6 +17,7 @@ import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ShooterFixedSpeed;
 import frc.robot.commands.ShooterRPM;
+import frc.robot.commands.TurnHoodShooterGroup;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 // import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -79,6 +80,10 @@ public class RobotContainer {
 
     JoystickButton buttonA = new JoystickButton(controller, 6);
     buttonA.whileHeld( new DeployIntake(intake));
+
+    JoystickButton buttonD = new JoystickButton(controller, 7); // this may not be an actual button
+    buttonD.whenPressed(new TurnHoodShooterGroup(drivebase, 0.5, 30, shooter, 4230, 30));
+    //Drivebase drivebase, double turnSpeed, double angle, Shooter shooter, double shooterSpeed, double hoodAngle
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

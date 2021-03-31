@@ -45,16 +45,13 @@ public class Shooter extends SubsystemBase {
 
   CANDigitalInput hoodLimit;
 
-  // Encoder hoodEncoder = new Encoder(Constants.sourceA, Constants.sourceB);
+  private final static double scale = 292.571;
 
-  // CANPIDController acceleratorController;
-
-  // CANPIDController hoodPID;
-
-  // private final static double encoderCountsPerGearDegree = 1680/720;
-  private final static double encoderCountsPerHoodDegree = 70/46.3;
+  private final static double encoderCountsPerHoodDegree = 70*scale/46.3; //TODO WITH ACTUAL MATH
 
   private final int currentLimitHood = 5;
+
+  
 
   CANPIDController acceleratController; 
   CANPIDController hoodController;
@@ -88,12 +85,13 @@ public class Shooter extends SubsystemBase {
     kMinOutput = -1;
     maxRPM = 5500;
 
+    //TODO --> TUNE PID
     p = 0.045; 
     i = 0.0;
     d = 0; 
     iz = 0; 
-    maxOutput = 0.75; 
-    minOutput = -0.75;
+    maxOutput = 1; 
+    minOutput = -1;
 
     // set PID coefficients
     acceleratController.setP(kP);
@@ -104,10 +102,11 @@ public class Shooter extends SubsystemBase {
     acceleratController.setOutputRange(kMinOutput, kMaxOutput);
 
     hoodController = hoodRight.getPIDController();
-    hoodEncoder = hoodRight.getEncoder(EncoderType.kQuadrature, 28);
+    hoodEncoder = hoodRight.getEncoder(EncoderType.kQuadrature, 8192);
+    // hoodEncoder.setInverted(true);
     hoodEncoder.setPosition(0);
     hoodLimit = hoodRight.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    hoodRight.setSoftLimit(SoftLimitDirection.kReverse, -65.0f);
+    hoodRight.setSoftLimit(SoftLimitDirection.kReverse, -1.18f); //TODO --> fix based off encoder
     hoodRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
     hoodController.setP(p);
     hoodController.setI(i);
@@ -132,7 +131,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void resetHoodEncoder() {
-    // hoodRight.setSelectedSensorPosition(0, 0, 10);
+    hoodEncoder.setPosition(0.0);
   }
 
   public void setHood(double speed) {
@@ -140,6 +139,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setHoodAngle(double degrees) {
+
+    //TODO FIX DEGREES
       hoodController.setReference(-degrees*encoderCountsPerHoodDegree, ControlType.kPosition);
   }
 

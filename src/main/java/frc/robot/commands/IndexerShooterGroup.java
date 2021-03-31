@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
@@ -27,7 +28,7 @@ public class IndexerShooterGroup extends ParallelCommandGroup {
     addCommands(
       // new SetHoodAngle(shooter, 20.0),
       new IndexerWithDelay(indexerDelay, indexer, indexerSpeed, selectorSpeed),
-      new ShooterRPM(shooter, shooterSpeed)
+      new ShooterRPM(shooter, SmartDashboard.getNumber("Shooter RPM", shooterSpeed))
     );
   }
 }

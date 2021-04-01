@@ -43,8 +43,7 @@ public class DriveToAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivebase.resetHeading();
-    // gyro.getAngle() is a substitute since CV hasn't been implemented yet
+    // drivebase.resetHeading();
     controller.reset();
     // controller.setIntegratorRange(-0.5, 0.5);
   }

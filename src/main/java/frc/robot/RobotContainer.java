@@ -83,7 +83,7 @@ public class RobotContainer {
 
     JoystickButton buttonD = new JoystickButton(controller, 7); // this may not be an actual button
     buttonD.whenPressed(new TurnHoodShooterGroup(drivebase, 0.5, 30, shooter, 4230, 30));
-    //Drivebase drivebase, double turnSpeed, double angle, Shooter shooter, double shooterSpeed, double hoodAngle
+    //Drivebase drivebase, double turnSpeed (max 0.5)), double angle, Shooter shooter, double shooterSpeed, double hoodAngle
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -4,34 +4,25 @@
 
 package frc.robot.commands;
 
-// import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import edu.wpi.first.wpilibj.controller.PIDController;
-
-import java.lang.Math;
-
-public class DriveToAngle extends CommandBase {
+public class driveToAngle extends CommandBase {
   /** Creates a new driveToAngle. */
 
   private double speed;
-  // private double angle;
+  private double angle;
+  private double initialAngle;
   private Drivebase drivebase;
 
-  private double turnSpeed;
+  private AHRS gyro;
 
-  private final PIDController controller = new PIDController(0.0333, 0.00, 0.0);
-
-  // private AHRS gyro;
-
-  public DriveToAngle(Drivebase drivebase, double speed /*, double angle */ ) {
+  public driveToAngle(Drivebase drivebase, double speed, double angle) {
     
     this.speed = speed;
-    // this.angle = angle;
+    this.angle = angle;
     this.drivebase = drivebase;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -43,16 +34,13 @@ public class DriveToAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // drivebase.resetHeading();
-    controller.reset();
-    // controller.setIntegratorRange(-0.5, 0.5);
+    initialAngle = gyro.getAngle();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turnSpeed = controller.calculate(SmartDashboard.getNumber("goal_angle", 0), 0);
-    drivebase.arcadeDrive(0, turnSpeed * speed);
+    drivebase.arcadeDrive(0, speed * ((angle > 0) ? 1 : -1));
   }
 
   // Called once the command ends or is interrupted.
@@ -62,9 +50,7 @@ public class DriveToAngle extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return (angle - 3) < gyro.getAngle() && gyro.getAngle() < (angle + 3);
-    return Math.abs(SmartDashboard.getNumber("goal_angle", 0)) < 3;
-    // 3 is just a buffer or something
-    // return false;
+    return (initialAngle + angle - 2) < gyro.getAngle() && gyro.getAngle() < (initialAngle + angle + 2);
+    // 2 is just a buffer so it actually stops around the desired angle, since this doesn't use pid
   }
 }

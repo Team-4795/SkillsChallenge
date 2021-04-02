@@ -17,11 +17,11 @@ public class TurnHoodShooterGroup extends ParallelCommandGroup {
    * @param shooter
    * 
   */
-  public TurnHoodShooterGroup(Drivebase drivebase, double driveSpeed, double angle, Shooter shooter, double shooterSpeed, double hoodAngle) {
+  public TurnHoodShooterGroup(Drivebase drivebase, double turnSpeed, double angle, Shooter shooter, double shooterSpeed, double hoodAngle) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveToAngle(drivebase, driveSpeed /*, angle */),
+      new driveToAngle(drivebase, turnSpeed, angle),
       new ShooterFixedSpeed(shooter, shooterSpeed),
       new SetHoodAngle(shooter, hoodAngle)
     );

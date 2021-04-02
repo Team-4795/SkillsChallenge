@@ -40,7 +40,7 @@ public class RobotContainer {
 
   private final Joystick controller = new Joystick(0);
 
-  private final Intake intake = new Intake(); 
+  //private final Intake intake = new Intake(); 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -61,8 +61,8 @@ public class RobotContainer {
     // double turn = -controller.getRawAxis(2) * (0.85 - 0.65 * throttle);
     drivebase.setDefaultCommand(new ArcadeDrive(
                                   drivebase, 
-                                  () -> -controller.getRawAxis(1) * 0.3, 
-                                  () -> -controller.getRawAxis(2) * 0.3));
+                                  () -> -controller.getRawAxis(1) * 0.6, 
+                                  () -> -controller.getRawAxis(2) * 0.6));
     shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
 
     JoystickButton buttonC = new JoystickButton(controller, 5); //10 is a guess
@@ -71,20 +71,20 @@ public class RobotContainer {
     JoystickButton buttonB = new JoystickButton(controller, 2);
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
     SmartDashboard.putNumber("hood degrees", 35);
-    SmartDashboard.putNumber("Shooter RPM", 4000);
-    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4230));
-    buttonY.whenHeld(new SetHood(shooter, 0.4));
-    buttonX.whenHeld(new SetHood(shooter, -0.4));
+    SmartDashboard.putNumber("Shooter RPM", 4600);
+    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4000));
+    buttonY.whenHeld(new SetHood(shooter, 0.15));
+    buttonX.whenHeld(new SetHood(shooter, -0.15));
     buttonB.whenHeld(new SetHoodAngle(shooter, 35));
     
     //0.5 second indexer delay, 0.4 on indexer motor, 0.4 on selector motor, 0.8 on shooter
 
     JoystickButton buttonA = new JoystickButton(controller, 6);
-    buttonA.whileHeld( new DeployIntake(intake));
+    //buttonA.whileHeld( new DeployIntake(intake));
 
     JoystickButton buttonD = new JoystickButton(controller, 7); // this may not be an actual button
     buttonD.whenPressed(new TurnHoodShooterGroup(drivebase, 0.5, 30, shooter, 4230, 30));
-    //Drivebase drivebase, double turnSpeed (max 0.5)), double angle, Shooter shooter, double shooterSpeed, double hoodAngle
+    //Drivebase drivebase, double turnSpeed, double angle, Shooter shooter, double shooterSpeed, double hoodAngle
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

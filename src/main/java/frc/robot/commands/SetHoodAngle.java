@@ -16,14 +16,13 @@ import frc.robot.subsystems.Shooter;
 public class SetHoodAngle extends CommandBase {
   private final Shooter shooter;
   private double degrees;
-  public final DigitalInput hood = new DigitalInput(Constants.HOOD_LIMIT);
   /**
    * Creates a new SetHoodAngle
    */
   public SetHoodAngle(Shooter shooter, double degrees) {
     this.shooter = shooter;
     this.degrees = degrees;
-    shooter.resetHoodEncoder();
+    //shooter.resetHoodEncoder();
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

@@ -7,10 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -47,7 +44,7 @@ public class Shooter extends SubsystemBase {
 
   private final static double scale = 292.571;
 
-  private final static double encoderCountsPerHoodDegree = 70*scale/46.3; //TODO WITH ACTUAL MATH
+  private final static double encoderRotationsPerHoodDegree = (1.0/(22.0/285.0)/360.0);
 
   private final int currentLimitHood = 5;
 
@@ -86,12 +83,12 @@ public class Shooter extends SubsystemBase {
     maxRPM = 5500;
 
     //TODO --> TUNE PID
-    p = 0.045; 
-    i = 0.0;
+    p = 8; 
+    i = 0.0002;
     d = 0; 
     iz = 0; 
-    maxOutput = 1; 
-    minOutput = -1;
+    maxOutput = .25; 
+    minOutput = -.25;
 
     // set PID coefficients
     acceleratController.setP(kP);
@@ -102,11 +99,10 @@ public class Shooter extends SubsystemBase {
     acceleratController.setOutputRange(kMinOutput, kMaxOutput);
 
     hoodController = hoodRight.getPIDController();
-    hoodEncoder = hoodRight.getEncoder(EncoderType.kQuadrature, 8192);
-    // hoodEncoder.setInverted(true);
+    hoodEncoder = hoodRight.getEncoder(EncoderType.kQuadrature, 8192);   hoodEncoder.setInverted(true);
     hoodEncoder.setPosition(0);
     hoodLimit = hoodRight.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    hoodRight.setSoftLimit(SoftLimitDirection.kReverse, -1.18f); //TODO --> fix based off encoder
+    hoodRight.setSoftLimit(SoftLimitDirection.kReverse, -1.22f); 
     hoodRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
     hoodController.setP(p);
     hoodController.setI(i);
@@ -141,7 +137,7 @@ public class Shooter extends SubsystemBase {
   public void setHoodAngle(double degrees) {
 
     //TODO FIX DEGREES
-      hoodController.setReference(-degrees*encoderCountsPerHoodDegree, ControlType.kPosition);
+      hoodController.setReference(-degrees*encoderRotationsPerHoodDegree, ControlType.kPosition);
   }
 
   public void setShooter(double speed) {
@@ -169,7 +165,7 @@ public class Shooter extends SubsystemBase {
     }
     SmartDashboard.putNumber("speed in RPM",(mainFlywheel1.getSelectedSensorVelocity())/2048.0*600);
     SmartDashboard.putNumber("encoderTiks", hoodEncoder.getPosition());
-    SmartDashboard.putNumber("degrees", hoodEncoder.getPosition()/ encoderCountsPerHoodDegree);
+    SmartDashboard.putNumber("degrees", -hoodEncoder.getPosition()/ encoderRotationsPerHoodDegree);
     SmartDashboard.putBoolean("limit switch status", hoodLimit.get());
     // SmartDashboard.putNumber("rev limit switch", hoodRight.isRevLimitSwitchClosed());
     // This method will be called once per scheduler run

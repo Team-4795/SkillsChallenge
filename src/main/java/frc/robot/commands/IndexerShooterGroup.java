@@ -28,7 +28,7 @@ public class IndexerShooterGroup extends ParallelCommandGroup {
     addCommands(
       // new SetHoodAngle(shooter, 20.0),
       new IndexerWithDelay(indexerDelay, indexer, indexerSpeed, selectorSpeed),
-      new ShooterRPM(shooter, SmartDashboard.getNumber("Shooter RPM", shooterSpeed))
+      new ShooterRPM(shooter, shooterSpeed)
     );
   }
 }

@@ -24,7 +24,7 @@ public class SetHood extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooter.resetHoodEncoder();
+    //shooter.resetHoodEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

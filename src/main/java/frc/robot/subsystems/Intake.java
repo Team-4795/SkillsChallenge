@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PWMSparkMax;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Compressor;
@@ -17,20 +16,19 @@ public class Intake extends SubsystemBase {
   private DoubleSolenoid extensionSolenoid = new DoubleSolenoid(6,7);
   
   public Intake(){
-//     Compressor c = new Compressor(0);
-
-// boolean enabled = c.enabled();
-// boolean pressureSwitch = c.getPressureSwitchValue();
-// double current = c.getCompressorCurrent();
+    Compressor c = new Compressor(0);
+    boolean enabled = c.enabled();
+    boolean pressureSwitch = c.getPressureSwitchValue();
+    double current = c.getCompressorCurrent();
   }
   public void motors(double speed){
     intakeMotor.set(speed);
   }
   public void out() { 
-    // extensionSolenoid.set(Value.kForward);
+     extensionSolenoid.set(Value.kForward);
   }
   public void in() {
-    // extensionSolenoid.set(Value.kReverse);
+    extensionSolenoid.set(Value.kReverse);
   }
 
   @Override

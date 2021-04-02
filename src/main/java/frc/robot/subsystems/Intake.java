@@ -16,10 +16,10 @@ public class Intake extends SubsystemBase {
   private DoubleSolenoid extensionSolenoid = new DoubleSolenoid(6,7);
   
   public Intake(){
-    Compressor c = new Compressor(0);
-    boolean enabled = c.enabled();
-    boolean pressureSwitch = c.getPressureSwitchValue();
-    double current = c.getCompressorCurrent();
+    //Compressor c = new Compressor(0);
+    //boolean enabled = c.enabled();
+    //boolean pressureSwitch = c.getPressureSwitchValue();
+    //double current = c.getCompressorCurrent();
   }
   public void motors(double speed){
     intakeMotor.set(speed);

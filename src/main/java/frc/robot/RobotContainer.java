@@ -71,7 +71,7 @@ public class RobotContainer {
     JoystickButton buttonB = new JoystickButton(controller, 2);
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
     SmartDashboard.putNumber("hood degrees", 35);
-    SmartDashboard.putNumber("Shooter RPM", 4600);
+    SmartDashboard.putNumber("Shooter RPM", 0);
     buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4000));
     buttonY.whenHeld(new SetHood(shooter, 0.15));
     buttonX.whenHeld(new SetHood(shooter, -0.15));

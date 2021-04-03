@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 
@@ -14,12 +15,14 @@ public class ShooterRPM extends CommandBase {
   
   public ShooterRPM(Shooter shooter, double speed) {
     this.shooter = shooter;
-    this.speed = speed;
+    // this.speed = speed;
     addRequirements(shooter);
   }
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    speed = SmartDashboard.getNumber("Shooter RPM", 0);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

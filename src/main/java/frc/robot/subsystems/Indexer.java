@@ -14,7 +14,15 @@ public class Indexer extends SubsystemBase {
   VictorSPX indexerMotor = new VictorSPX(9);
   VictorSPX selectorMotor = new VictorSPX(10);
 
-  public Indexer() {}
+  public Indexer() {
+
+    indexerMotor.configOpenloopRamp(1.0, 0);
+    selectorMotor.configOpenloopRamp(1.0, 0);
+
+    // 1.0 seconds is the time to go from 0V to 12V
+    // Decrease the first argument to increase the acceleration
+
+  }
 
   public void setIndexerSpeed(double indexerSpeed, double selectorSpeed) {
     indexerMotor.set(VictorSPXControlMode.PercentOutput, indexerSpeed);

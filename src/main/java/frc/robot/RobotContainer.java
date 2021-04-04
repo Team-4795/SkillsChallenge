@@ -77,14 +77,16 @@ public class RobotContainer {
     buttonX.whenHeld(new SetHood(shooter, -0.15));
     buttonB.whenHeld(new SetHoodAngle(shooter, 35));
     
-    //0.5 second indexer delay, 0.4 on indexer motor, 0.4 on selector motor, 0.8 on shooter
+    //0.5 second indexer delay, 0.25 on indexer motor, 0.75 on selector motor, 0.8 on shooter
 
     JoystickButton buttonA = new JoystickButton(controller, 6);
     //buttonA.whileHeld( new DeployIntake(intake));
 
     JoystickButton buttonD = new JoystickButton(controller, 7); // this may not be an actual button
-    buttonD.whenPressed(new TurnHoodShooterGroup(drivebase, 0.5, 30, shooter, 4230, 30));
-    //Drivebase drivebase, double turnSpeed, double angle, Shooter shooter, double shooterSpeed, double hoodAngle
+    buttonD.whenPressed(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
+    /*Drivebase drivebase, double turnSpeed, 
+    Shooter shooter, double shooterSpeed, double hoodAngle, 
+    Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

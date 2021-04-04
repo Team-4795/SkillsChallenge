@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -15,15 +16,18 @@ public class TurnHoodShooterGroup extends ParallelCommandGroup {
   /** Creates a new TurnHoodShooterGroup.
    * @param drivebase
    * @param shooter
-   * 
+   * @param indexer
   */
-  public TurnHoodShooterGroup(Drivebase drivebase, double turnSpeed, double angle, Shooter shooter, double shooterSpeed, double hoodAngle) {
+  public TurnHoodShooterGroup(Drivebase drivebase, double turnSpeed, 
+  Shooter shooter, double shooterSpeed, double hoodAngle, 
+  Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new driveToAngle(drivebase, turnSpeed, angle),
-      new ShooterFixedSpeed(shooter, shooterSpeed),
-      new SetHoodAngle(shooter, hoodAngle)
+      new DriveToAngle(drivebase, turnSpeed),
+      new ShooterRPM(shooter, shooterSpeed),
+      new SetHoodAngle(shooter, hoodAngle),
+      new IndexerWithDelay(indexerDelay, indexer, indexerSpeed, selectorSpeed)
     );
   }
 }

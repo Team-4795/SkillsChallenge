@@ -13,6 +13,7 @@ import frc.robot.commands.IndexerShooterGroup;
 import frc.robot.commands.SetHood;
 import frc.robot.commands.SetHoodAngle;
 import frc.robot.commands.DeployIntake;
+import frc.robot.commands.DriveToAngle;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ShooterFixedSpeed;
@@ -70,7 +71,7 @@ public class RobotContainer {
     JoystickButton buttonX = new JoystickButton(controller, 4);
     JoystickButton buttonB = new JoystickButton(controller, 2);
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
-    SmartDashboard.putNumber("hood degrees", 35);
+    SmartDashboard.putNumber("hood degrees", 35); 
     SmartDashboard.putNumber("Shooter RPM", 0);
     leftBumper.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4000));
     buttonY.whenHeld(new SetHood(shooter, 0.15));
@@ -83,10 +84,14 @@ public class RobotContainer {
     //buttonA.whileHeld( new DeployIntake(intake));
 
     JoystickButton leftTrigger = new JoystickButton(controller, 7); // this may not be an actual button
-    leftTrigger.whenHeld(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
+    //leftTrigger.whenHeld(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
+    leftTrigger.whenHeld(new DriveToAngle(drivebase, 0.5));
     /*Drivebase drivebase, double turnSpeed, 
     Shooter shooter, double shooterSpeed, double hoodAngle, 
     Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/
+
+
+
   }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

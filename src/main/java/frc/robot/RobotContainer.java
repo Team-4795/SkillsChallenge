@@ -83,7 +83,7 @@ public class RobotContainer {
     //buttonA.whileHeld( new DeployIntake(intake));
 
     JoystickButton buttonD = new JoystickButton(controller, 7); // this may not be an actual button
-    buttonD.whenPressed(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
+    buttonD.whenHeld(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
     /*Drivebase drivebase, double turnSpeed, 
     Shooter shooter, double shooterSpeed, double hoodAngle, 
     Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/

@@ -65,14 +65,14 @@ public class RobotContainer {
                                   () -> -controller.getRawAxis(2) * 0.6));
     shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
 
-    JoystickButton buttonC = new JoystickButton(controller, 5); //10 is a guess
+    JoystickButton leftBumper = new JoystickButton(controller, 5); //10 is a guess
     JoystickButton buttonY = new JoystickButton(controller, 1);
     JoystickButton buttonX = new JoystickButton(controller, 4);
     JoystickButton buttonB = new JoystickButton(controller, 2);
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
     SmartDashboard.putNumber("hood degrees", 35);
     SmartDashboard.putNumber("Shooter RPM", 0);
-    buttonC.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4000));
+    leftBumper.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4000));
     buttonY.whenHeld(new SetHood(shooter, 0.15));
     buttonX.whenHeld(new SetHood(shooter, -0.15));
     buttonB.whenHeld(new SetHoodAngle(shooter, 35));
@@ -82,8 +82,8 @@ public class RobotContainer {
     JoystickButton buttonA = new JoystickButton(controller, 6);
     //buttonA.whileHeld( new DeployIntake(intake));
 
-    JoystickButton buttonD = new JoystickButton(controller, 7); // this may not be an actual button
-    buttonD.whenHeld(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
+    JoystickButton leftTrigger = new JoystickButton(controller, 7); // this may not be an actual button
+    leftTrigger.whenHeld(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
     /*Drivebase drivebase, double turnSpeed, 
     Shooter shooter, double shooterSpeed, double hoodAngle, 
     Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/

@@ -18,8 +18,8 @@ public final class Constants {
 
 	public static final int HOOD_RIGHT = 12;
     public static final int HOOD_LEFT = 11;
-	public static final int sourceB = 0;
-	public static final int sourceA = 0;
 	public static final int HOOD_LIMIT = 0;
+	public static final int RIGHT_TRIGGER = 6;
+	public static final int LEFT_TRIGGER = 7;
 
 }

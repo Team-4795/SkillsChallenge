@@ -79,25 +79,27 @@ public class RobotContainer {
     SmartDashboard.putNumber("hood degrees", 35); 
     SmartDashboard.putNumber("Shooter RPM", 0);
     leftBumper.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4000));
+     /*Drivebase drivebase, double turnSpeed, 
+    Shooter shooter, double shooterSpeed, double hoodAngle, 
+    Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/
     buttonY.whenHeld(new SetHood(shooter, 0.15));
     buttonX.whenHeld(new SetHood(shooter, -0.15));
     buttonB.whenHeld(new SetHoodAngle(shooter, 35));
     
     //0.5 second indexer delay, 0.25 on indexer motor, 0.75 on selector motor, 0.8 on shooter
 
-    JoystickButton buttonA = new JoystickButton(controller, 6);
+    JoystickButton rightTrigger = new JoystickButton(controller, Constants.RIGHT_TRIGGER);
     //buttonA.whileHeld( new DeployIntake(intake));
+    rightTrigger.whenHeld(new ArcadeDrive(drivebase, () -> 1.0, () -> 0.0));
 
-    JoystickButton leftTrigger = new JoystickButton(controller, 7); // this may not be an actual button
+    JoystickButton leftTrigger = new JoystickButton(controller, Constants.LEFT_TRIGGER); // this may not be an actual button
     //leftTrigger.whenHeld(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
     leftTrigger.whenHeld(new DriveToAngle(drivebase, 0.5));
-    /*Drivebase drivebase, double turnSpeed, 
-    Shooter shooter, double shooterSpeed, double hoodAngle, 
-    Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/
+   
 
     JoystickButton buttonFake = new JoystickButton(controller, 99); // not an actual button
-    buttonFake.whenPressed(new DriveToAngleNavX(drivebase, 0.5, 30.0).withTimeout(1.0));
-    // drivebase, max turn speed, angle, 1.0 second timeout
+    buttonFake.whenPressed(new DriveToAngleNavX(drivebase, 0.5, 30.0).withTimeout(0.7));
+    // drivebase, max turn speed, angle, 0.7 second timeout
 
     JoystickButton buttonD = new JoystickButton(controller, 100); //not an actual button
     buttonD.whenPressed(new ResetHeading(drivebase));

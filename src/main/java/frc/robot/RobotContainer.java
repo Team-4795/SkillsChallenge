@@ -91,8 +91,8 @@ public class RobotContainer {
     Shooter shooter, double shooterSpeed, double hoodAngle, 
     Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/
 
-    JoystickButton buttonFake = new JoystickButton(controller, 99); // not an actual button    
-    buttonFake.whenPressed(new DriveToAngleNavX(drivebase, 0.5, 30).withTimeout(1.0));
+    JoystickButton buttonFake = new JoystickButton(controller, 99); // not an actual button
+    buttonFake.whenPressed(new DriveToAngleNavX(drivebase, 0.5, 30.0).withTimeout(1.0));
     // drivebase, max turn speed, angle, 1.0 second timeout
 
   }

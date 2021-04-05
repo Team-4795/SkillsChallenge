@@ -46,8 +46,8 @@ public class DriveToAngleNavX extends CommandBase {
 
     controller.reset();
 
-    controller.setIntegratorRange(-0.5, 0.5);
-    //this may not be necessary
+    // controller.setIntegratorRange(-0.5, 0.5);
+    // this is currently unnecessary
 
     drivebase.resetHeading();
 

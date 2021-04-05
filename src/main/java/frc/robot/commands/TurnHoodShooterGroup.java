@@ -24,7 +24,7 @@ public class TurnHoodShooterGroup extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveToAngle(drivebase, turnSpeed),
+      new DriveToAngle(drivebase, turnSpeed).withTimeout(0.75),
       new ShooterRPM(shooter, shooterSpeed),
       new SetHoodAngle(shooter, hoodAngle),
       new IndexerWithDelay(indexerDelay, indexer, indexerSpeed, selectorSpeed)

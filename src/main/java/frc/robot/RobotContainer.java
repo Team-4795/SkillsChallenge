@@ -90,11 +90,11 @@ public class RobotContainer {
 
     JoystickButton rightTrigger = new JoystickButton(controller, Constants.RIGHT_TRIGGER);
     //buttonA.whileHeld( new DeployIntake(intake));
-    rightTrigger.whenHeld(new ArcadeDrive(drivebase, () -> 1.0, () -> 0.0));
+    rightTrigger.whenHeld(new ArcadeDrive(drivebase, () -> -controller.getRawAxis(1), () -> -controller.getRawAxis(2)));
 
     JoystickButton leftTrigger = new JoystickButton(controller, Constants.LEFT_TRIGGER); // this may not be an actual button
     //leftTrigger.whenHeld(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
-    leftTrigger.whenHeld(new DriveToAngle(drivebase, 0.5));
+    leftTrigger.whenHeld(new TurnHoodShooterGroup(drivebase, 0.75, shooter, 4000.0, 35.0, indexer, 0.5, 0.25, 0.75));
    
 
     JoystickButton buttonFake = new JoystickButton(controller, 99); // not an actual button

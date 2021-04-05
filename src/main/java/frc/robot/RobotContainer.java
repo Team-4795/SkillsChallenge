@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.IndexerShooterGroup;
+import frc.robot.commands.ResetHeading;
 import frc.robot.commands.SetHood;
 import frc.robot.commands.SetHoodAngle;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.DriveToAngle;
 import frc.robot.commands.DriveToAngleNavX;
+import frc.robot.commands.DriveToZero;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ShooterFixedSpeed;
@@ -48,6 +50,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    
     
   }
 
@@ -94,6 +98,14 @@ public class RobotContainer {
     JoystickButton buttonFake = new JoystickButton(controller, 99); // not an actual button
     buttonFake.whenPressed(new DriveToAngleNavX(drivebase, 0.5, 30.0).withTimeout(1.0));
     // drivebase, max turn speed, angle, 1.0 second timeout
+
+    JoystickButton buttonD = new JoystickButton(controller, 100); //not an actual button
+    buttonD.whenPressed(new ResetHeading(drivebase));
+    // set 0 degree heading
+
+    JoystickButton buttonE = new JoystickButton(controller, 101); //not an actual button
+    buttonE.whenPressed(new DriveToZero(drivebase, 0.5));
+    // turn to the 0 degree heading
 
   }
   /**

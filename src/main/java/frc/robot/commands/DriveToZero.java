@@ -15,11 +15,10 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 
 import java.lang.Math;
 
-public class DriveToAngleNavX extends CommandBase {
+public class DriveToZero extends CommandBase {
   /** Creates a new driveToAngle. */
 
   private double speed;
-  private double angle;
   private double initialAngle;
   private Drivebase drivebase;
 
@@ -29,10 +28,9 @@ public class DriveToAngleNavX extends CommandBase {
 
   private AHRS gyro;
 
-  public DriveToAngleNavX(Drivebase drivebase, double speed, double angle) {
+  public DriveToZero(Drivebase drivebase, double speed) {
     
     this.speed = speed;
-    this.angle = angle;
     this.drivebase = drivebase;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -57,7 +55,7 @@ public class DriveToAngleNavX extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turnSpeed = controller.calculate(gyro.getAngle() - initialAngle, angle);
+    turnSpeed = controller.calculate(gyro.getAngle() - initialAngle, -1 * initialAngle);
     drivebase.arcadeDrive(0, turnSpeed * speed);
   }
 
@@ -69,5 +67,6 @@ public class DriveToAngleNavX extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+    // May need something here
   }
 }

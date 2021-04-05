@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-// import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivebase;
@@ -15,23 +15,23 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 
 import java.lang.Math;
 
-public class DriveToAngle extends CommandBase {
+public class DriveToAngleNavX extends CommandBase {
   /** Creates a new driveToAngle. */
 
   private double speed;
-  // private double angle;
+  private double angle;
   private Drivebase drivebase;
 
   private double turnSpeed;
 
-  private final PIDController controller = new PIDController(1, 0.00, 0.0);
+  private final PIDController controller = new PIDController(0.0333, 0.00, 0.0);
 
-  // private AHRS gyro;
+  private AHRS gyro;
 
-  public DriveToAngle(Drivebase drivebase, double speed /*, double angle */ ) {
+  public DriveToAngleNavX(Drivebase drivebase, double speed, double angle) {
     
     this.speed = speed;
-    // this.angle = angle;
+    this.angle = angle;
     this.drivebase = drivebase;
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -43,15 +43,20 @@ public class DriveToAngle extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // drivebase.resetHeading();
+
     controller.reset();
-    // controller.setIntegratorRange(-0.5, 0.5);
+
+    controller.setIntegratorRange(-0.5, 0.5);
+    //this may not be necessary
+
+    drivebase.resetHeading();
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turnSpeed = controller.calculate(SmartDashboard.getNumber("goal_angle", 0), 0);
+    turnSpeed = controller.calculate(gyro.getAngle(), angle);
     drivebase.arcadeDrive(0, turnSpeed * speed);
   }
 
@@ -63,6 +68,5 @@ public class DriveToAngle extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
-    //this may need a +-2 or 3 degree buffer?
   }
 }

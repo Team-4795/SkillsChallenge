@@ -14,6 +14,7 @@ import frc.robot.commands.SetHood;
 import frc.robot.commands.SetHoodAngle;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.DriveToAngle;
+import frc.robot.commands.DriveToAngleNavX;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ShooterFixedSpeed;
@@ -90,7 +91,9 @@ public class RobotContainer {
     Shooter shooter, double shooterSpeed, double hoodAngle, 
     Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/
 
-
+    JoystickButton buttonFake = new JoystickButton(controller, 99); // not an actual button    
+    buttonFake.whenPressed(new DriveToAngleNavX(drivebase, 0.5, 30).withTimeout(1.0));
+    // drivebase, max turn speed, angle, 1.0 second timeout
 
   }
   /**

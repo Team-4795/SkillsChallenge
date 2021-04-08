@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.IndexerShooterGroup;
+import frc.robot.commands.IndexerWithDelay;
 import frc.robot.commands.ResetHeading;
 import frc.robot.commands.SetHood;
 import frc.robot.commands.SetHoodAngle;
@@ -17,6 +18,7 @@ import frc.robot.commands.DeployIntake;
 import frc.robot.commands.DriveToAngle;
 import frc.robot.commands.DriveToAngleNavX;
 import frc.robot.commands.DriveToZero;
+import frc.robot.commands.IndexerCommand;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ShooterFixedSpeed;
@@ -24,6 +26,7 @@ import frc.robot.commands.ShooterRPM;
 import frc.robot.commands.TurnHoodShooterGroup;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 // import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton; 
 import frc.robot.subsystems.Intake;
@@ -90,13 +93,19 @@ public class RobotContainer {
 
     JoystickButton rightTrigger = new JoystickButton(controller, Constants.RIGHT_TRIGGER);
     //buttonA.whileHeld( new DeployIntake(intake));
-    rightTrigger.whenHeld(new ArcadeDrive(drivebase, () -> -controller.getRawAxis(1), () -> -controller.getRawAxis(2)));
+    //reduce numbers below to reduce indexer and selector speeds
+    rightTrigger.whenHeld(new ShooterRPM(shooter, 4000.0));
 
+    Command toRun = new ParallelCommandGroup(
+      new DriveToAngle(drivebase, 0.75).withTimeout(0.75),
+      new IndexerWithDelay(0.25, indexer, 1, 1),
+      new SetHoodAngle(shooter, 35.0)
+    ); 
+    
     JoystickButton leftTrigger = new JoystickButton(controller, Constants.LEFT_TRIGGER); // this may not be an actual button
     //leftTrigger.whenHeld(new TurnHoodShooterGroup(drivebase, 0.5, shooter, 4230, 30, indexer, 0.5, 0.25, 0.75));
-    leftTrigger.whenHeld(new TurnHoodShooterGroup(drivebase, 0.75, shooter, 4000.0, 35.0, indexer, 0.5, 0.25, 0.75));
+    leftTrigger.whenHeld(toRun);
    
-
     JoystickButton buttonFake = new JoystickButton(controller, 99); // not an actual button
     buttonFake.whenPressed(new DriveToAngleNavX(drivebase, 0.5, 30.0).withTimeout(0.7));
     // drivebase, max turn speed, angle, 0.7 second timeout

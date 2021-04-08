@@ -102,7 +102,7 @@ public class Shooter extends SubsystemBase {
     hoodEncoder = hoodRight.getEncoder(EncoderType.kQuadrature, 8192);   hoodEncoder.setInverted(true);
     hoodEncoder.setPosition(0);
     hoodLimit = hoodRight.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    hoodRight.setSoftLimit(SoftLimitDirection.kReverse, -1.22f); 
+    hoodRight.setSoftLimit(SoftLimitDirection.kReverse, -1.3f); 
     hoodRight.enableSoftLimit(SoftLimitDirection.kReverse, true);
     hoodController.setP(p);
     hoodController.setI(i);

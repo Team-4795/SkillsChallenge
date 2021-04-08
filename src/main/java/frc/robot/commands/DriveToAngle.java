@@ -24,7 +24,7 @@ public class DriveToAngle extends CommandBase {
 
   private double turnSpeed;
 
-  private final PIDController controller = new PIDController(1, 0.00, 0.0);
+  private final PIDController controller = new PIDController(9, 0.001, 0.0);
 
   // private AHRS gyro;
 

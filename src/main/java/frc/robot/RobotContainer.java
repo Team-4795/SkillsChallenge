@@ -67,8 +67,8 @@ public class RobotContainer {
     // double turn = -controller.getRawAxis(2) * (0.85 - 0.65 * throttle);
     drivebase.setDefaultCommand(new ArcadeDrive(
                                   drivebase, 
-                                  () -> -controller.getRawAxis(1) * 0.6, 
-                                  () -> -controller.getRawAxis(2) * 0.6));
+                                  () -> -controller.getRawAxis(1) * 0.9, 
+                                  () -> -controller.getRawAxis(2) * 0.65));
     shooter.setDefaultCommand(new ShooterFixedSpeed(shooter, 0.0));
 
     JoystickButton leftBumper = new JoystickButton(controller, 5); //10 is a guess
@@ -78,7 +78,7 @@ public class RobotContainer {
     // buttonC.whenHeld(new ShooterFixedSpeed(shooter, 0.8));
     SmartDashboard.putNumber("hood degrees", 35); 
     SmartDashboard.putNumber("Shooter RPM", 0);
-    leftBumper.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.25, 0.75, shooter, 4000));
+    leftBumper.whenHeld(new IndexerShooterGroup(0.5, indexer, 0.15, 0.75, shooter, 4000));
      /*Drivebase drivebase, double turnSpeed, 
     Shooter shooter, double shooterSpeed, double hoodAngle, 
     Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed*/

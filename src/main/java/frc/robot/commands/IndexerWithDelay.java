@@ -12,11 +12,6 @@ import frc.robot.subsystems.Indexer;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class IndexerWithDelay extends SequentialCommandGroup {
-  /** Creates a new IndexerWithDelay.
-   * 
-   * @param indexer
-   * 
-  */
   public IndexerWithDelay(double indexerDelay, Indexer indexer, double indexerSpeed, double selectorSpeed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());

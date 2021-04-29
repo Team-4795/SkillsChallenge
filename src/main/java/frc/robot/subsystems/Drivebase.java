@@ -5,12 +5,14 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -18,15 +20,18 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Drivebase extends SubsystemBase {
   
-  private CANSparkMax leftLeader = new CANSparkMax(4, MotorType.kBrushless);
-  private CANSparkMax leftFollower = new CANSparkMax(5, MotorType.kBrushless);
+  private CANSparkMax leftLeader = new CANSparkMax(Constants.DRIVETRAIN_LEFT_LEADER, MotorType.kBrushless);
+  private CANSparkMax leftFollower = new CANSparkMax(Constants.DRIVETRAIN_LEFT_FOLLOWER, MotorType.kBrushless);
 
-  private CANSparkMax rightLeader = new CANSparkMax(2, MotorType.kBrushless);
-  private CANSparkMax rightFollower = new CANSparkMax(3, MotorType.kBrushless);
+  private CANSparkMax rightLeader = new CANSparkMax(Constants.DRIVETRAIN_RIGHT_LEADER, MotorType.kBrushless);
+  private CANSparkMax rightFollower = new CANSparkMax(Constants.DRIVETRAIN_RIGHT_FOLLOWER, MotorType.kBrushless);
 
   private DifferentialDrive diffDrive = new DifferentialDrive(leftLeader, rightLeader);
 
   private CANEncoder leftEncoder, rightEncoder;
+
+  public double movementSpeed = 0;
+  public int direction = 1;
 
   public AHRS gyro;
 
@@ -39,21 +44,39 @@ public class Drivebase extends SubsystemBase {
 
     gyro = new AHRS(SPI.Port.kMXP);
 
+    diffDrive.setDeadband(0.0);
   }
 
-  public void arcadeDrive(double speed, double rotation) {
-    diffDrive.arcadeDrive(speed, rotation);
+  public void curvatureDrive(double speed, double rotation, boolean quickTurn) {
+    movementSpeed = Math.max(Math.abs(speed), Math.abs(rotation));
+
+    diffDrive.curvatureDrive(speed * direction, rotation, quickTurn);
+  }
+
+  public void reverse() {
+    if(Math.abs(movementSpeed) < 0.25) direction *= -1;
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Left encoder", leftEncoder.getPosition());
-    SmartDashboard.putNumber("Right encoder", rightEncoder.getPosition());
+    if(movementSpeed == 0 && getVelocity() < 2500) {
+      leftLeader.setIdleMode(IdleMode.kBrake);
+      leftFollower.setIdleMode(IdleMode.kBrake);
+      rightLeader.setIdleMode(IdleMode.kBrake);
+      rightFollower.setIdleMode(IdleMode.kBrake);
+    } else {
+      leftLeader.setIdleMode(IdleMode.kCoast);
+      leftFollower.setIdleMode(IdleMode.kCoast);
+      rightLeader.setIdleMode(IdleMode.kCoast);
+      rightFollower.setIdleMode(IdleMode.kCoast);
+    }
+
+    SmartDashboard.putNumber("Left drivebase encoder", leftEncoder.getPosition());
+    SmartDashboard.putNumber("Right drivebase encoder", rightEncoder.getPosition());
+    SmartDashboard.putNumber("Drivebase speed", rightEncoder.getPosition());
   }
 
   public void resetHeading() {
-    // Not currently used in driveToAngle
     gyro.zeroYaw();
     gyro.setAngleAdjustment(-gyro.getAngle());
   }
@@ -62,8 +85,7 @@ public class Drivebase extends SubsystemBase {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
-  @Override
-  public void simulationPeriodic() {
-    // This method will be called once per scheduler run during simulation
+  public double getVelocity() {
+    return (leftEncoder.getVelocity() + rightEncoder.getVelocity()) / 2.0;
   }
 }

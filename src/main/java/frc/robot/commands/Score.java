@@ -12,22 +12,15 @@ import frc.robot.subsystems.Shooter;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class TurnHoodShooterGroup extends ParallelCommandGroup {
-  /** Creates a new TurnHoodShooterGroup.
-   * @param drivebase
-   * @param shooter
-   * @param indexer
-  */
-  public TurnHoodShooterGroup(Drivebase drivebase, double turnSpeed, 
-  Shooter shooter, double shooterSpeed, double hoodAngle, 
-  Indexer indexer, double indexerDelay, double indexerSpeed, double selectorSpeed) {
+public class Score extends ParallelCommandGroup {
+  public Score(Drivebase drivebase, Shooter shooter, Indexer indexer) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new DriveToAngle(drivebase, turnSpeed).withTimeout(0.75),
-      new ShooterRPM(shooter, shooterSpeed),
-      new SetHoodAngle(shooter, hoodAngle),
-      new IndexerWithDelay(indexerDelay, indexer, indexerSpeed, selectorSpeed)
+      new TurnToGoal(drivebase),
+      new ShooterRPM(shooter, 5500),
+      new AimHood(shooter),
+      new IndexerWithDelay(0.75, indexer, 0.2, 0.75)
     );
   }
 }

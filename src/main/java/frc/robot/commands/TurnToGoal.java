@@ -5,30 +5,34 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.subsystems.Drivebase;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ResetHeading extends CommandBase {
-
+public class TurnToGoal extends CommandBase {
   private Drivebase drivebase;
 
-  /** Creates a new ResetHeading. */
-  public ResetHeading(Drivebase drivebase) {
+  private final PIDController controller = new PIDController(0.0333, 0.00, 0.0);
 
+  public TurnToGoal(Drivebase drivebase) {
     this.drivebase = drivebase;
-    
-    // Use addRequirements() here to declare subsystem dependencies.
 
     addRequirements(drivebase);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    controller.reset();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivebase.resetHeading();
+    double turnSpeed = MathUtil.clamp(controller.calculate(SmartDashboard.getNumber("goal_angle", 0), 0), -1, 1);
+
+    drivebase.curvatureDrive(0, turnSpeed, true);
   }
 
   // Called once the command ends or is interrupted.

@@ -7,41 +7,46 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Intake;
 
-public class SetHoodAngle extends CommandBase {
-  private final Shooter shooter;
-  private double degrees;
-  /**
-   * Creates a new SetHoodAngle
-   */
-  public SetHoodAngle(Shooter shooter, double degrees) {
-    this.shooter = shooter;
-    this.degrees = degrees;
-    //shooter.resetHoodEncoder();
-    // Use addRequirements() here to declare subsystem dependencies.
+public class AutoIntake extends CommandBase {
+  private Intake intake;
+  private Drivebase drivebase;
+  
+  public AutoIntake(Intake intake, Drivebase drivebase) {
+    this.intake = intake;
+    this.drivebase = drivebase;
+    
+    addRequirements(intake);
+    addRequirements(drivebase);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setHoodAngle(SmartDashboard.getNumber("hood degrees", 25));
+    if(drivebase.direction == 1) {
+      intake.retract();
+      intake.setIntakeSpeed(0);
+    } else {
+      intake.extend();
+      
+      if(drivebase.movementSpeed > 0) {
+        intake.setIntakeSpeed(0.5 + drivebase.movementSpeed / 2);
+      } else {
+        intake.setIntakeSpeed(0);
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    shooter.setHood(0.0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

@@ -7,21 +7,15 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Indexer extends SubsystemBase {
-  /** Creates a new Indexer. */
-
-  VictorSPX indexerMotor = new VictorSPX(9);
-  VictorSPX selectorMotor = new VictorSPX(10);
+  VictorSPX indexerMotor = new VictorSPX(Constants.INDEXER_VICTOR);
+  VictorSPX selectorMotor = new VictorSPX(Constants.SELECTOR_VICTOR);
 
   public Indexer() {
-
     indexerMotor.configOpenloopRamp(1.0, 0);
     selectorMotor.configOpenloopRamp(1.0, 0);
-
-    // 1.0 seconds is the time to go from 0V to 12V
-    // Decrease the first argument to increase the acceleration
-
   }
 
   public void setIndexerSpeed(double indexerSpeed, double selectorSpeed) {
@@ -30,7 +24,5 @@ public class Indexer extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 }

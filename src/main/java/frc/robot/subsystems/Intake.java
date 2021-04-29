@@ -9,30 +9,33 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  /** Creates a new Intake. */
-  private Spark intakeMotor = new Spark(0); 
-  private DoubleSolenoid extensionSolenoid = new DoubleSolenoid(6,7);
+  private Spark intakeMotor = new Spark(Constants.INTAKE_SPARK); 
+  private DoubleSolenoid solenoid = new DoubleSolenoid(Constants.FORWARD_SOLENOID, Constants.REVERSE_SOLENOID);
+  private Compressor compressor = new Compressor(Constants.COMPRESSOR);
   
-  public Intake(){
-    //Compressor c = new Compressor(0);
-    //boolean enabled = c.enabled();
-    //boolean pressureSwitch = c.getPressureSwitchValue();
-    //double current = c.getCompressorCurrent();
-  }
-  public void motors(double speed){
+  public Intake() {}
+
+  public void setIntakeSpeed(double speed) {
     intakeMotor.set(speed);
   }
-  public void out() { 
-     extensionSolenoid.set(Value.kForward);
+
+  public void extend() { 
+    solenoid.set(Value.kForward);
   }
-  public void in() {
-    extensionSolenoid.set(Value.kReverse);
+
+  public void retract() {
+    solenoid.set(Value.kReverse);
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    if(compressor.getPressureSwitchValue()) {
+      compressor.start();
+    } else {
+      compressor.stop();
+    }
   }
 }

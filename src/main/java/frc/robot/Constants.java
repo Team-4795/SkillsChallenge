@@ -24,8 +24,6 @@ public final class Constants {
 
 	public static final int INTAKE_SPARK = 0;
 
-	public static final int COMPRESSOR = 0;
-
 	public static final int FORWARD_SOLENOID = 6;
 	public static final int REVERSE_SOLENOID = 7;
 

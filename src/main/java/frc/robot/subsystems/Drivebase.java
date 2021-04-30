@@ -86,6 +86,6 @@ public class Drivebase extends SubsystemBase {
   }
 
   public double getVelocity() {
-    return (leftEncoder.getVelocity() + rightEncoder.getVelocity()) / 2.0;
+    return Math.max(Math.abs(leftEncoder.getVelocity()), Math.abs(rightEncoder.getVelocity()));
   }
 }

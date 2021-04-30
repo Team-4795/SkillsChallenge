@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,7 +13,6 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   private Spark intakeMotor = new Spark(Constants.INTAKE_SPARK); 
   private DoubleSolenoid solenoid = new DoubleSolenoid(Constants.FORWARD_SOLENOID, Constants.REVERSE_SOLENOID);
-  private Compressor compressor = new Compressor(Constants.COMPRESSOR);
   
   public Intake() {}
 
@@ -31,11 +29,5 @@ public class Intake extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    if(compressor.getPressureSwitchValue()) {
-      compressor.start();
-    } else {
-      compressor.stop();
-    }
-  }
+  public void periodic() {}
 }

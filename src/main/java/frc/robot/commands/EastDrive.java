@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Drivebase;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
+
 import java.util.function.Supplier;
 
 public class EastDrive extends CommandBase {
@@ -13,8 +15,10 @@ public class EastDrive extends CommandBase {
   private final Supplier<Double> m_xaxisSpeedSupplier;
   private final Supplier<Double> m_zaxisRotateSupplier;
   private final Supplier<Double> m_throttle;
-  private long lastSpeedPress;
-  private double forward = 1.0;
+  private long lastAcceleration;
+  private long lastUpdate;
+  private double speed = 0;
+  private double minSpeed = 0.05;
 
   public EastDrive(
       Drivebase drivetrain,
@@ -25,29 +29,44 @@ public class EastDrive extends CommandBase {
     m_xaxisSpeedSupplier = xaxisSpeedSupplier;
     m_zaxisRotateSupplier = zaxisRotateSupplier;
     m_throttle = throttle;
+    
     addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    lastSpeedPress = 0;
+    lastAcceleration = 0;
+    lastUpdate = System.currentTimeMillis();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_xaxisSpeedSupplier.get();
+    double acceleration = m_xaxisSpeedSupplier.get();
     double rotation = m_zaxisRotateSupplier.get();
     double throttle = m_throttle.get();
-    
-    if(Math.abs(speed) > 0) lastSpeedPress = System.currentTimeMillis();
 
+    acceleration = 0.5 * acceleration + 0.5 * Math.pow(acceleration, 3);
     throttle = (1.0 - throttle * 0.75);
-    speed *= forward * throttle;
+    
+    if(Math.abs(acceleration) > 0) {
+      lastAcceleration = System.currentTimeMillis();
+
+      if(Math.signum(speed) != Math.signum(acceleration)) {
+        speed = minSpeed * Math.signum(acceleration);
+      } else {
+        double adjustment = (System.currentTimeMillis() - lastUpdate) / 500.0;
+        
+        speed = Math.min(Math.abs(speed) + adjustment, Math.abs(acceleration) * (1.0 - minSpeed) + minSpeed);
+        speed *= Math.signum(acceleration) * throttle;
+      }
+    } else {
+      speed = 0;
+    }
     
     if(speed == 0) {
-      double transitionRamp = Math.min(Math.max((System.currentTimeMillis() - lastSpeedPress) / 500.0, 0.5), 1.0);
+      double transitionRamp = MathUtil.clamp((System.currentTimeMillis() - lastAcceleration) / 500.0, 0.5, 1.0);
 
       rotation *= Math.max(throttle, 0.4) * transitionRamp * 0.6;
 
@@ -55,6 +74,8 @@ public class EastDrive extends CommandBase {
     } else {
       m_drivetrain.curvatureDrive(speed, rotation, false);
     }
+
+    lastUpdate = System.currentTimeMillis();
   }
 
   // Called once the command ends or is interrupted.

@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 
 public class Intake extends SubsystemBase {
-  private Spark intakeMotor = new Spark(Constants.INTAKE_SPARK); 
-  private DoubleSolenoid solenoid = new DoubleSolenoid(Constants.FORWARD_SOLENOID, Constants.REVERSE_SOLENOID);
+  private Spark intakeMotor = new Spark(IntakeConstants.INTAKE_SPARK); 
+  private DoubleSolenoid solenoid = new DoubleSolenoid(IntakeConstants.FORWARD_SOLENOID, IntakeConstants.REVERSE_SOLENOID);
   
   public Intake() {}
 

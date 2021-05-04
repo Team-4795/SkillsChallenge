@@ -19,16 +19,16 @@ import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
-  CANSparkMax acceleratorWheel = new CANSparkMax(Constants.ACCELERATOR_SPARK, MotorType.kBrushless);
+  CANSparkMax acceleratorWheel = new CANSparkMax(ShooterConstants.ACCELERATOR_SPARK, MotorType.kBrushless);
     
-  TalonFX leaderFlywheel = new TalonFX(Constants.LEADER_FLYWHEEL_TALON);
-  TalonFX followerFlywheel = new TalonFX(Constants.FOLLOWER_FLYWHEEL_TALON);
+  TalonFX leaderFlywheel = new TalonFX(ShooterConstants.LEADER_FLYWHEEL_TALON);
+  TalonFX followerFlywheel = new TalonFX(ShooterConstants.FOLLOWER_FLYWHEEL_TALON);
 
-  CANSparkMax leaderHood = new CANSparkMax(Constants.LEADER_HOOD_SPARK, MotorType.kBrushed);
-  CANSparkMax followerHood = new CANSparkMax(Constants.FOLLOWER_HOOD_SPARK, MotorType.kBrushed);
+  CANSparkMax leaderHood = new CANSparkMax(ShooterConstants.LEADER_HOOD_SPARK, MotorType.kBrushed);
+  CANSparkMax followerHood = new CANSparkMax(ShooterConstants.FOLLOWER_HOOD_SPARK, MotorType.kBrushed);
 
   public CANDigitalInput hoodLimit;
 

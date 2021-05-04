@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.DrivebaseConstants;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,11 +20,11 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Drivebase extends SubsystemBase {
   
-  private CANSparkMax leftLeader = new CANSparkMax(Constants.DRIVETRAIN_LEFT_LEADER, MotorType.kBrushless);
-  private CANSparkMax leftFollower = new CANSparkMax(Constants.DRIVETRAIN_LEFT_FOLLOWER, MotorType.kBrushless);
+  private CANSparkMax leftLeader = new CANSparkMax(DrivebaseConstants.DRIVETRAIN_LEFT_LEADER, MotorType.kBrushless);
+  private CANSparkMax leftFollower = new CANSparkMax(DrivebaseConstants.DRIVETRAIN_LEFT_FOLLOWER, MotorType.kBrushless);
 
-  private CANSparkMax rightLeader = new CANSparkMax(Constants.DRIVETRAIN_RIGHT_LEADER, MotorType.kBrushless);
-  private CANSparkMax rightFollower = new CANSparkMax(Constants.DRIVETRAIN_RIGHT_FOLLOWER, MotorType.kBrushless);
+  private CANSparkMax rightLeader = new CANSparkMax(DrivebaseConstants.DRIVETRAIN_RIGHT_LEADER, MotorType.kBrushless);
+  private CANSparkMax rightFollower = new CANSparkMax(DrivebaseConstants.DRIVETRAIN_RIGHT_FOLLOWER, MotorType.kBrushless);
 
   private DifferentialDrive diffDrive = new DifferentialDrive(leftLeader, rightLeader);
 
@@ -59,7 +59,7 @@ public class Drivebase extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(movementSpeed == 0 && getVelocity() < 2500) {
+    if(movementSpeed == 0 && getVelocity() < 3500) {
       leftLeader.setIdleMode(IdleMode.kBrake);
       leftFollower.setIdleMode(IdleMode.kBrake);
       rightLeader.setIdleMode(IdleMode.kBrake);

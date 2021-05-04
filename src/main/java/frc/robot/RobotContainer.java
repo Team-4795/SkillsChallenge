@@ -44,8 +44,8 @@ public class RobotContainer {
     JoystickButton leftBumper = new JoystickButton(controller, ControllerConstants.LEFT_BUMPER);
     JoystickButton rightBumper = new JoystickButton(controller, ControllerConstants.RIGHT_BUMPER);
     JoystickButton leftTrigger = new JoystickButton(controller, ControllerConstants.LEFT_TRIGGER);
-    JoystickButton aButton = new JoystickButton(controller, ControllerConstants.B_BUTTON);
-    JoystickButton bButton = new JoystickButton(controller, ControllerConstants.A_BUTTON);
+    JoystickButton aButton = new JoystickButton(controller, ControllerConstants.A_BUTTON);
+    JoystickButton bButton = new JoystickButton(controller, ControllerConstants.B_BUTTON);
 
     leftBumper.whileHeld(new ParallelCommandGroup(
       new TurnToGoal(drivebase),

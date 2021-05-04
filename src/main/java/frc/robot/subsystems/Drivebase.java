@@ -20,11 +20,11 @@ import edu.wpi.first.wpilibj.SPI;
 
 public class Drivebase extends SubsystemBase {
   
-  private CANSparkMax leftLeader = new CANSparkMax(DrivebaseConstants.DRIVETRAIN_LEFT_LEADER, MotorType.kBrushless);
-  private CANSparkMax leftFollower = new CANSparkMax(DrivebaseConstants.DRIVETRAIN_LEFT_FOLLOWER, MotorType.kBrushless);
+  private CANSparkMax leftLeader = new CANSparkMax(DrivebaseConstants.LEFT_LEADER, MotorType.kBrushless);
+  private CANSparkMax leftFollower = new CANSparkMax(DrivebaseConstants.LEFT_FOLLOWER, MotorType.kBrushless);
 
-  private CANSparkMax rightLeader = new CANSparkMax(DrivebaseConstants.DRIVETRAIN_RIGHT_LEADER, MotorType.kBrushless);
-  private CANSparkMax rightFollower = new CANSparkMax(DrivebaseConstants.DRIVETRAIN_RIGHT_FOLLOWER, MotorType.kBrushless);
+  private CANSparkMax rightLeader = new CANSparkMax(DrivebaseConstants.RIGHT_LEADER, MotorType.kBrushless);
+  private CANSparkMax rightFollower = new CANSparkMax(DrivebaseConstants.RIGHT_FOLLOWER, MotorType.kBrushless);
 
   private DifferentialDrive diffDrive = new DifferentialDrive(leftLeader, rightLeader);
 

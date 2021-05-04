@@ -37,10 +37,10 @@ public final class Constants {
 	}
 
 	public static final class DrivebaseConstants {
-		public static final int DRIVETRAIN_LEFT_LEADER = 4;
-		public static final int DRIVETRAIN_LEFT_FOLLOWER = 5;
-		public static final int DRIVETRAIN_RIGHT_LEADER = 2;
-		public static final int DRIVETRAIN_RIGHT_FOLLOWER = 3;
+		public static final int LEFT_LEADER = 4;
+		public static final int LEFT_FOLLOWER = 5;
+		public static final int RIGHT_LEADER = 2;
+		public static final int RIGHT_FOLLOWER = 3;
 	}
 
 	public static final class ControllerConstants {

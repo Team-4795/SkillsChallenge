@@ -13,7 +13,6 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
-import com.revrobotics.EncoderType;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -22,42 +21,38 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class Shooter extends SubsystemBase {
-  CANSparkMax acceleratorWheel = new CANSparkMax(ShooterConstants.ACCELERATOR_SPARK, MotorType.kBrushless);
+  private CANSparkMax acceleratorWheel = new CANSparkMax(ShooterConstants.ACCELERATOR_SPARK, MotorType.kBrushless);
     
-  TalonFX leaderFlywheel = new TalonFX(ShooterConstants.LEADER_FLYWHEEL_TALON);
-  TalonFX followerFlywheel = new TalonFX(ShooterConstants.FOLLOWER_FLYWHEEL_TALON);
+  private TalonFX leaderFlywheel = new TalonFX(ShooterConstants.LEADER_FLYWHEEL_TALON);
+  private TalonFX followerFlywheel = new TalonFX(ShooterConstants.FOLLOWER_FLYWHEEL_TALON);
 
-  CANSparkMax leaderHood = new CANSparkMax(ShooterConstants.LEADER_HOOD_SPARK, MotorType.kBrushed);
-  CANSparkMax followerHood = new CANSparkMax(ShooterConstants.FOLLOWER_HOOD_SPARK, MotorType.kBrushed);
+  private CANSparkMax hood = new CANSparkMax(ShooterConstants.HOOD_SPARK, MotorType.kBrushless);
 
-  public CANDigitalInput hoodLimit;
+  private CANDigitalInput hoodLimit;
 
-  private final static double encoderRotationsPerHoodDegree = (1.0 / (22.0 / 285.0) / 360.0);  
+  private final static double encoderRotationsPerHoodDegree = -1.093792;  
 
-  CANPIDController acceleratorController; 
-  CANPIDController hoodController;
+  private CANPIDController acceleratorController; 
+  private CANPIDController hoodController;
 
-  CANEncoder acceleratorEncoder;
-  public CANEncoder hoodEncoder;
+  private CANEncoder hoodEncoder;
 
   public Shooter() {
     acceleratorWheel.restoreFactoryDefaults();
-    leaderHood.restoreFactoryDefaults();    
+    hood.restoreFactoryDefaults();    
     leaderFlywheel.configFactoryDefault();
 
     acceleratorController = acceleratorWheel.getPIDController();
-    acceleratorEncoder = acceleratorWheel.getEncoder();
 
-    hoodController = leaderHood.getPIDController();
-    hoodEncoder = leaderHood.getEncoder(EncoderType.kQuadrature, 8192);
-    hoodEncoder.setInverted(true);
+    hoodController = hood.getPIDController();
+    hoodEncoder = hood.getEncoder();
+    hoodEncoder.setPositionConversionFactor(-1);
     hoodEncoder.setPosition(0);
 
-    hoodLimit = leaderHood.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    hoodLimit = hood.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
 
-    leaderHood.setSoftLimit(SoftLimitDirection.kReverse, -1.3f); 
-    leaderHood.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    followerHood.follow(leaderHood, true);
+    hood.setSoftLimit(SoftLimitDirection.kReverse, -51.5f); 
+    hood.enableSoftLimit(SoftLimitDirection.kReverse, true);
 
     leaderFlywheel.setInverted(true);
     followerFlywheel.follow(leaderFlywheel);
@@ -72,11 +67,11 @@ public class Shooter extends SubsystemBase {
     acceleratorController.setFF(0.1);
     acceleratorController.setOutputRange(-1, 1);
 
-    hoodController.setP(8);
-    hoodController.setI(0.0002);
+    hoodController.setP(0.2);
+    hoodController.setI(0);
     hoodController.setD(0);
     hoodController.setIZone(0);
-    hoodController.setOutputRange(-0.75, 0.75);
+    hoodController.setOutputRange(-0.25, 0.5);
 
     leaderFlywheel.config_kF(0, 0.0485, 0);
     leaderFlywheel.config_kP(0, 0.016, 0);
@@ -89,11 +84,15 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setHoodSpeed(double speed) {
-    leaderHood.set(speed);
+    hood.set(speed);
   }
 
   public void setHoodAngle(double degrees) {
-    hoodController.setReference(-degrees * encoderRotationsPerHoodDegree, ControlType.kPosition);
+    hoodController.setReference(degrees * encoderRotationsPerHoodDegree, ControlType.kPosition);
+  }
+
+  public boolean isHoodRetracted() {
+    return hoodLimit.get();
   }
 
   public void setShooter(double speed) {
@@ -119,6 +118,7 @@ public class Shooter extends SubsystemBase {
     if (hoodLimit.get()) {
       hoodEncoder.setPosition(0);
     }
+    
     SmartDashboard.putBoolean("limit switch", hoodLimit.get());
     SmartDashboard.putNumber("shooter speed", (leaderFlywheel.getSelectedSensorVelocity()) / 2048.0 * 600);
     SmartDashboard.putNumber("hood encoder ticks", hoodEncoder.getPosition());

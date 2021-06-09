@@ -19,7 +19,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 
 public class Drivebase extends SubsystemBase {
-  
   private CANSparkMax leftLeader = new CANSparkMax(DrivebaseConstants.LEFT_LEADER, MotorType.kBrushless);
   private CANSparkMax leftFollower = new CANSparkMax(DrivebaseConstants.LEFT_FOLLOWER, MotorType.kBrushless);
 
@@ -30,14 +29,19 @@ public class Drivebase extends SubsystemBase {
 
   private CANEncoder leftEncoder, rightEncoder;
 
-  public double movementSpeed = 0;
-  public int direction = 1;
+  private double movementSpeed = 0;
+  private int direction = 1;
 
-  public AHRS gyro;
+  private AHRS gyro;
 
   public Drivebase() {
     leftFollower.follow(leftLeader);
     rightFollower.follow(rightLeader);
+
+    leftLeader.setIdleMode(IdleMode.kBrake);
+    leftFollower.setIdleMode(IdleMode.kBrake);
+    rightLeader.setIdleMode(IdleMode.kBrake);
+    rightFollower.setIdleMode(IdleMode.kBrake);
 
     leftEncoder = leftLeader.getEncoder();
     rightEncoder = rightLeader.getEncoder();
@@ -54,26 +58,13 @@ public class Drivebase extends SubsystemBase {
   }
 
   public void reverse() {
-    if(Math.abs(movementSpeed) < 0.25) direction *= -1;
+    if(Math.abs(movementSpeed) < 0.3) direction *= -1;
   }
 
   @Override
   public void periodic() {
-    if(movementSpeed == 0 && getVelocity() < 3500) {
-      leftLeader.setIdleMode(IdleMode.kBrake);
-      leftFollower.setIdleMode(IdleMode.kBrake);
-      rightLeader.setIdleMode(IdleMode.kBrake);
-      rightFollower.setIdleMode(IdleMode.kBrake);
-    } else {
-      leftLeader.setIdleMode(IdleMode.kCoast);
-      leftFollower.setIdleMode(IdleMode.kCoast);
-      rightLeader.setIdleMode(IdleMode.kCoast);
-      rightFollower.setIdleMode(IdleMode.kCoast);
-    }
-
-    SmartDashboard.putNumber("Left drivebase encoder", leftEncoder.getPosition());
-    SmartDashboard.putNumber("Right drivebase encoder", rightEncoder.getPosition());
-    SmartDashboard.putNumber("Drivebase speed", rightEncoder.getPosition());
+    SmartDashboard.putNumber("Left drivebase encoder", getLeftEncoder());
+    SmartDashboard.putNumber("Right drivebase encoder", getRightEncoder());
   }
 
   public void resetHeading() {
@@ -85,7 +76,15 @@ public class Drivebase extends SubsystemBase {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
-  public double getVelocity() {
-    return Math.max(Math.abs(leftEncoder.getVelocity()), Math.abs(rightEncoder.getVelocity()));
+  public double getLeftEncoder() {
+    return leftEncoder.getPosition();
+  }
+
+  public double getRightEncoder() {
+    return rightEncoder.getPosition();
+  }
+
+  public double getSpeed() {
+    return movementSpeed;
   }
 }

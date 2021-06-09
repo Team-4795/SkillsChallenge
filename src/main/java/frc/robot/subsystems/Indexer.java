@@ -10,12 +10,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IndexerConstants;
 
 public class Indexer extends SubsystemBase {
-  VictorSPX indexerMotor = new VictorSPX(IndexerConstants.INDEXER_VICTOR);
-  VictorSPX selectorMotor = new VictorSPX(IndexerConstants.SELECTOR_VICTOR);
+  private VictorSPX indexerMotor = new VictorSPX(IndexerConstants.INDEXER_VICTOR);
+  private VictorSPX selectorMotor = new VictorSPX(IndexerConstants.SELECTOR_VICTOR);
 
   public Indexer() {
-    indexerMotor.configOpenloopRamp(1.0, 0);
-    selectorMotor.configOpenloopRamp(1.0, 0);
+    indexerMotor.configOpenloopRamp(1.25, 0);
+    selectorMotor.configOpenloopRamp(1.25, 0);
   }
 
   public void setIndexerSpeed(double indexerSpeed, double selectorSpeed) {

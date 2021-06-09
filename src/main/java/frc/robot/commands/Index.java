@@ -11,28 +11,23 @@ public class Index extends CommandBase {
   private Indexer indexer;
   private double indexerSpeed;
   private double selectorSpeed;
-  private double delay;
-  private long startTime;
 
-  public Index(Indexer indexer, double indexerSpeed, double selectorSpeed, double delay) {
+  public Index(Indexer indexer, double indexerSpeed, double selectorSpeed) {
     this.indexer = indexer;
     this.indexerSpeed = indexerSpeed;
     this.selectorSpeed = selectorSpeed;
-    this.delay = delay;
     
     addRequirements(indexer);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    startTime = System.currentTimeMillis();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(System.currentTimeMillis() - startTime > delay) indexer.setIndexerSpeed(indexerSpeed, selectorSpeed);
+    indexer.setIndexerSpeed(indexerSpeed, selectorSpeed);
   }
 
   // Called once the command ends or is interrupted.

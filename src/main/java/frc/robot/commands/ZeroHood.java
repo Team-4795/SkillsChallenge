@@ -26,8 +26,8 @@ public class ZeroHood extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!shooter.hoodLimit.get()) {
-      shooter.setHoodSpeed(0.5);
+    if(!shooter.isHoodRetracted()) {
+      shooter.setHoodSpeed(0.1);
     } else {
       shooter.setHoodSpeed(0);
     }

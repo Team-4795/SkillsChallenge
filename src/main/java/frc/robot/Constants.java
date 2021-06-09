@@ -9,7 +9,7 @@ public final class Constants {
 		public static final int LEADER_FLYWHEEL_TALON = 6;
 		public static final int FOLLOWER_FLYWHEEL_TALON = 7;
 		
-		public static final int HOOD_SPARK = 12;
+		public static final int HOOD_SPARK = 11;
 
 		public static final int ACCELERATOR_SPARK = 8;
 	}

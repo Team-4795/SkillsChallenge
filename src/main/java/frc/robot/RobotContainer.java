@@ -12,7 +12,6 @@ import frc.robot.commands.EastDrive;
 import frc.robot.commands.ZeroHood;
 import frc.robot.commands.TurnToGoal;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.AimHood;
 import frc.robot.commands.Index;
 import frc.robot.commands.RunTests;
 import frc.robot.Constants.ControllerConstants;
@@ -61,7 +60,6 @@ public class RobotContainer {
     leftBumper.whileHeld(new ParallelCommandGroup(
       new TurnToGoal(drivebase),
       new Shoot(shooter, 5500),
-      new AimHood(shooter),
       new SequentialCommandGroup(new WaitCommand(0.75), new Index(indexer, 0.3, 0.75))
     ));
     rightBumper.whenPressed(new InstantCommand(() -> drivebase.reverse()));
